@@ -1,0 +1,354 @@
+@extends('layout.content')
+
+@section('title', 'Doctor')
+
+
+
+
+@section('breadcumb')
+
+<body class="fix-header fix-sidebar card-no-border logo-center">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Doctor</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Doctor</a></li>
+                        <li class="breadcrumb-item active">Index</li>
+                    </ol>
+                </div>
+                <div>
+                    <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+           
+@endsection
+
+@section('content')
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title clearfix d-flex pull-left">Doctor List</h4>
+                
+                
+                @if(Session::has('response'))
+					<div class="alert alert-{{Session::get('response')['class']}}">
+					{{Session::get('response')['message']}}
+					</div>
+				 @endif
+                 <div class="clearfix m-t-40 p-t-10">
+                    <div class="row m-t-40 p-t-10">
+                    @if($doc)
+                        @foreach($doc as $i=>$de)   
+                    <!-- .col -->
+                        <div class="col-md-6 col-lg-6 col-xlg-4">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-3 text-center">
+                                        <a href="app-contact-detail.html"><img src="{{asset($de->image)}}" alt="user" class="img-circle img-responsive"></a>
+                                    </div>
+                                    <div class="col-md-8 col-lg-9">
+                                        <h3 class="box-title m-b-0">{{$de->name}}</h3> <small>{{$de->e_qualification}}</small>
+                                        <address>
+                                            {{$de->designation}} ,Department of {{$de->department?->name}}
+                                            <br/>
+                                            <br/>
+                                            <abbr title="Phone">P:</abbr> (123) 456-7890
+                                        </address>
+                                        <div class="text-nowrap">
+                                            <a href="{{route(Session::get('identity').'.doctor.show',$de->id)}}" class="btn waves-effect waves-light btn-rounded btn-xs btn-success d-inline">show deails</a>
+                                            <a href="{{route(Session::get('identity').'.doctor.edit',$de->id)}}" class="btn waves-effect waves-light btn-rounded btn-xs btn-info d-inline">edit</a>
+                                            {{-- <a href="#" onclick="edit({{$de->id}})">edit </a> --}}
+                                            {{-- <a href="{{route(Session::get('identity').'.doctor.destroy',$de->id)}}"><i class="fa fa-close text-danger"></i> </a> --}}
+                                            <form action="{{route(Session::get('identity').'.doctor.destroy',$de->id)}}" method="post" class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button  @if($de->status==2) disabled @endif class="btn waves-effect waves-light btn-rounded btn-xs btn-danger d-inline" type="submit">Retire</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        @endforeach
+                    @endif
+                    
+                        {{-- @if($doc)
+                        @foreach($doc as $i=>$de)
+                        <!-- column -->
+                        <div class="col-lg-3 col-md-6 img-responsive">
+                            <!-- Card -->
+                            <div class="card">
+                                <img style="height: 288px;width:100%;" class="card-img-top img-responsive" src="{{asset($de->image)}}" alt="Card image cap" height="80" width="80" style=";">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{$de->name}}</h4>
+                                    <p class="card-text">{{$de->e_qualification}}</p>
+                                    <p class="card-text">{{$de->designation}} ,{{$de->department?->name}}</p>
+                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            <div class="text-nowrap">
+                                <a href="{{route(Session::get('identity').'.doctor.edit',$de->id)}}" class="btn waves-effect waves-light btn-rounded btn-xs btn-info d-inline">edit</a>
+                                {{-- <a href="#" onclick="edit({{$de->id}})">edit </a> --}}
+                                {{-- <a href="{{route(Session::get('identity').'.doctor.destroy',$de->id)}}"><i class="fa fa-close text-danger"></i> </a> --}}
+                               {{-- <form action="{{route(Session::get('identity').'.doctor.destroy',$de->id)}}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('delete')
+                                    <button  @if($de->status==2) disabled @endif class="btn waves-effect waves-light btn-rounded btn-xs btn-danger d-inline" type="submit">Retire</button>
+                                </form>
+                            </div>
+                            </div>
+                            <!-- Card -->
+                        </div>
+                        <!-- column -->
+                    @endforeach
+                    @endif --}}
+                    </div>
+                </div>
+                <!-- Row -->
+                <div>
+                    {{ $doc->links('pagination::bootstrap-4') }}
+                </div>
+
+{{-- 
+                <div class="table-responsive">
+                    <table class="table color-table muted-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Specialization</th>
+                                <th>Qualification</th>
+                                <th>Designation</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Status</th>
+                                <th>Dep id</th>
+                                <th>Fee</th>
+                                <th>Emp id</th>
+                                <th>image</th>
+                                <th>Action</th>
+      
+      
+                            </tr>
+                        </thead>
+
+              <tbody>@php $status=array('Suspended','Active','Retired'); @endphp
+                            @if($doc)
+                                @foreach($doc as $i=>$de)
+                                    <tr>
+                                        <td>{{$de->id}}</td>
+                                        <td>{{$de->name}}</td>
+                                        <td>{{$de->specialization}}</td>
+                                        <td>{{$de->e_qualification}}</td>
+                                        <td>{{$de->designation}}</td>
+                                        <td>{{$de->contact}}</td>
+                                        <td>{{$de->email}}</td>
+                                        <td>{{$de->address}}</td>
+                                        <td>{{$status[$de->status]}}</td>
+                                        <td>{{$de->department?->name}}</td>
+                                        <td>{{$de->fee}}</td>
+                                        <td>{{$de->employee_id}}</td>
+                                        <td><img height="80" width="80" src='{{asset($de->image)}}'></td>
+                                        <td class="text-nowrap">
+                                            <a href="{{route(Session::get('identity').'.doctor.edit',$de->id)}}" class="btn waves-effect waves-light btn-rounded btn-xs btn-info">edit</a>
+                                            {{-- <a href="#" onclick="edit({{$de->id}})">edit </a> --}}
+                                            {{-- <a href="{{route(Session::get('identity').'.doctor.destroy',$de->id)}}"><i class="fa fa-close text-danger"></i> </a> --}}
+                                            {{-- <form action="{{route(Session::get('identity').'.doctor.destroy',$de->id)}}" method="post" class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button  @if($de->status==2) disabled @endif class="btn waves-effect waves-light btn-rounded btn-xs btn-danger d-inline" type="submit">Retire</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                        <tfoot>
+                            <tr> --}}
+                                {{-- <td colspan="2">
+                                    <button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact">Add New Department</button>
+                                </td> --}}
+                                {{--<div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myModalLabel">Add New Department</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                              </div>   
+                                        <form id="add" class="form-horizontal form-material" method="post" action="#">
+                                            @csrf
+                                            <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12 m-b-20">
+                                                            <input type="text" id="d_name" class="form-control" placeholder="Department name">
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" onclick="add()" class="btn btn-info waves-effect" data-dismiss="modal">Save</button>
+                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <td colspan="7">
+                                    
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div> --}}
+            </div>
+        </div>
+        <div class="d-flex pull-right">
+            <a href="{{route(Session::get('identity').'.doctor.create')}}" class="btn btn-info btn-rounded mb-5">Add New Doctor</a>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+                               
+                        <!-- for update model-->
+                                {{-- <div id="update-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myModalLabel">update New Department</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                              </div>   
+                                        <form id="add" class="form-horizontal form-material" method="post" action="#">
+                                            @csrf
+                                            <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12 m-b-20">
+                                                            <input type="hidden" id="ed_id">
+                                                            <input type="text" id="ed_name" class="form-control" placeholder="Department name">
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" onclick="update()" class="btn btn-info waves-effect" data-dismiss="modal">update</button>
+                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div> --}}
+@endsection
+
+
+@push('style')
+    <link href="{{asset('asset/assets/plugins/footable/css/footable.core.css')}}" rel="stylesheet">
+    <link href="{{asset('asset/assets/plugins/bootstrap-select/bootstrap-select.min.css')}}" rel="stylesheet" />
+@endpush
+@push('script')
+
+<script>
+  
+        //      function add() {
+        //             var name = $('#d_name').val();
+        //             var _token=$('input[name=_token]').val();
+        //             $.ajax({
+        //                 url: "{{route(Session::get('identity').'.department.store')}}",
+        //                 type: "POST",
+        //                 data: {
+        //                     name:name,
+        //                     _token:_token
+        //                 },
+        //                 success:function(response){
+        //                     if(response.error==0){
+                                
+        //                         showAllPosts()
+                               
+        //                     }
+        //                 }
+        //             })
+        //         }
+        //         function showAllPosts() {
+        //         location.reload();
+        // }
+
+
+        //    function edit(a){
+        //     $('#update-contact').modal('show');
+        //     $('#basicModal').empty();
+        //         $.get( 's_id/'+a,function(response){ 
+        //             $('#ed_name').val(response.data.name);
+        //             $('#ed_id').val(response.data.id);
+                    
+        //         })
+        //     }
+
+
+
+        //     function update(){
+        //         var name = $('#ed_name').val();
+        //         var id = $('#ed_id').val();
+        //         var _token=$('input[name=_token]').val();
+        //         alert(_token);
+        //         return;
+        //         $.ajax({
+        //                 url: '/department/' + id,
+        //                 type: "PUT",
+        //                 data:{
+        //                     name:name,
+        //                     _token:_token
+        //                 },
+        //                 success:function(response){
+        //                     if(response.error==0){
+                                
+                                
+                               
+        //                     }
+        //                 }
+
+        //         })
+        //     }
+               
+                  
+</script>
+    <script src="{{asset('asset/assets/plugins/footable/js/footable.all.min.js')}}"></script>
+    <script src="{{asset('asset/assets/plugins/bootstrap-select/bootstrap-select.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('asset/js/footable-init.js')}}"></script>
+
+    
+@endpush
+
+
+
+
+
